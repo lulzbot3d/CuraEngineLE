@@ -23,4 +23,4 @@ class CuraEngineTestConan(ConanFile):
 
     def test(self):
         if can_run(self):
-            self.run("CuraEngine help", env = "conanrun")
+            self.run("CuraEngineLE help", env = "conanrun")

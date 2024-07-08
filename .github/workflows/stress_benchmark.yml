@@ -34,22 +34,22 @@ env:
 
 jobs:
   check_actor:
-    uses: ultimaker/cura-workflows/.github/workflows/check-actor.yml@main
+    uses: lulzbot3d/cura-le-workflows/.github/workflows/check-actor.yml@main
     secrets: inherit
 
   conan-recipe-version:
     needs: [ check_actor ]
     if: ${{ needs.check_actor.outputs.proceed == 'true' }}
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
+    uses: lulzbot3d/cura-le-workflows/.github/workflows/conan-recipe-version.yml@main
     with:
-      project_name: curaengine
+      project_name: curaenginele
 
   benchmark:
     needs: [ conan-recipe-version ]
-    uses: ultimaker/cura-workflows/.github/workflows/benchmark.yml@main
+    uses: lulzbot3d/cura-le-workflows/.github/workflows/benchmark.yml@main
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-      conan_extra_args: "-o curaengine:enable_benchmarks=True"
+      conan_extra_args: "-o curaenginele:enable_benchmarks=True"
       benchmark_cmd: "stress_benchmark/stress_benchmark -o benchmark_result.json"
       name: "Stress Benchmark"
       output_file_path: "build/Release/benchmark_result.json"

@@ -15,13 +15,13 @@ from conans.tools import which
 required_conan_version = ">=1.58.0 <2.0.0"
 
 
-class CuraEngineConan(ConanFile):
-    name = "curaengine"
+class CuraEngineLEConan(ConanFile):
+    name = "curaenginele"
     license = "AGPL-3.0"
-    author = "UltiMaker"
-    url = "https://github.com/Ultimaker/CuraEngine"
-    description = "Powerful, fast and robust engine for converting 3D models into g-code instructions for 3D printers. It is part of the larger open source project Cura."
-    topics = ("cura", "protobuf", "gcode", "c++", "curaengine", "libarcus", "gcode-generation", "3D-printing")
+    author = "LulzBot"
+    url = "https://github.com/lulzbot3d/CuraEngineLE"
+    description = "LulzBot Edition of the Cura Engine: a powerful, fast and robust engine for converting 3D models into g-code instructions for 3D printers."
+    topics = ("curale", "protobuf", "gcode", "c++", "curaenginele", "libarcus", "gcode-generation", "3D-printing")
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
 
@@ -53,9 +53,9 @@ class CuraEngineConan(ConanFile):
 
     def export_sources(self):
         copy(self, "CMakeLists.txt", self.recipe_folder, self.export_sources_folder)
-        copy(self, "Cura.proto", self.recipe_folder, self.export_sources_folder)
-        copy(self, "CuraEngine.ico", self.recipe_folder, self.export_sources_folder)
-        copy(self, "CuraEngine.rc", self.recipe_folder, self.export_sources_folder)
+        copy(self, "CuraLE.proto", self.recipe_folder, self.export_sources_folder)
+        copy(self, "CuraEngineLE.ico", self.recipe_folder, self.export_sources_folder)
+        copy(self, "CuraEngineLE.rc", self.recipe_folder, self.export_sources_folder)
         copy(self, "LICENSE", self.recipe_folder, self.export_sources_folder)
         copy(self, "*", path.join(self.recipe_folder, "src"), path.join(self.export_sources_folder, "src"))
         copy(self, "*", path.join(self.recipe_folder, "include"), path.join(self.export_sources_folder, "include"))
@@ -66,8 +66,8 @@ class CuraEngineConan(ConanFile):
     def config_options(self):
         if not self.options.enable_plugins:
             del self.options.enable_remote_plugins
-        sentry_project = self.conf.get("user.curaengine:sentry_project", "", check_type=str)
-        sentry_org = self.conf.get("user.curaengine:sentry_org", "", check_type=str)
+        sentry_project = self.conf.get("user.curaenginele:sentry_project", "", check_type=str)
+        sentry_org = self.conf.get("user.curaenginele:sentry_org", "", check_type=str)
         if os.environ.get('SENTRY_TOKEN', None) is None or sentry_project == "" or sentry_org == "":
             del self.options.enable_sentry
 
@@ -93,7 +93,7 @@ class CuraEngineConan(ConanFile):
                 raise ConanInvalidConfiguration("only versions 5+ are supported")
 
     def build_requirements(self):
-        self.test_requires("standardprojectsettings/[>=0.1.0]@ultimaker/stable")
+        self.test_requires("standardprojectsettings/[>=0.1.0]@lulzbot/stable")
         if self.options.enable_arcus or self.options.enable_plugins:
             self.tool_requires("protobuf/3.21.9")
         if not self.conf.get("tools.build:skip_test", False, check_type=bool):
@@ -118,7 +118,7 @@ class CuraEngineConan(ConanFile):
                 self.requires(req)
         if self.options.enable_arcus or self.options.enable_plugins:
             self.requires("protobuf/3.21.12")
-        self.requires("clipper/6.4.2@ultimaker/stable")
+        self.requires("clipper/6.4.2@lulzbot/stable")
         self.requires("boost/1.82.0")
         self.requires("rapidjson/1.1.0")
         self.requires("stb/20200203")
@@ -127,7 +127,7 @@ class CuraEngineConan(ConanFile):
         self.requires("range-v3/0.12.0")
         self.requires("zlib/1.2.12")
         self.requires("openssl/3.2.0")
-        self.requires("mapbox-wagyu/0.5.0@ultimaker/stable")
+        self.requires("mapbox-wagyu/0.5.0@lulzbot/stable")
 
     def generate(self):
         deps = CMakeDeps(self)
@@ -143,7 +143,7 @@ class CuraEngineConan(ConanFile):
         tc.variables["ENABLE_THREADING"] = not (self.settings.arch == "wasm" and self.settings.os == "Emscripten")
         if self.options.get_safe("enable_sentry", False):
             tc.variables["ENABLE_SENTRY"] = True
-            tc.variables["SENTRY_URL"] = self.conf.get("user.curaengine:sentry_url", "", check_type=str)
+            tc.variables["SENTRY_URL"] = self.conf.get("user.curaenginele:sentry_url", "", check_type=str)
         if self.options.enable_plugins:
             tc.variables["ENABLE_PLUGINS"] = True
             tc.variables["ENABLE_REMOTE_PLUGINS"] = self.options.enable_remote_plugins
@@ -178,7 +178,7 @@ class CuraEngineConan(ConanFile):
     def layout(self):
         cmake_layout(self)
         self.cpp.build.includedirs = ["."]  # To package the generated headers
-        self.cpp.package.libs = ["_CuraEngine"]
+        self.cpp.package.libs = ["_CuraEngineLE"]
 
     def build(self):
         cmake = CMake(self)
@@ -187,8 +187,8 @@ class CuraEngineConan(ConanFile):
 
         if self.options.get_safe("enable_sentry", False):
             # Upload debug symbols to sentry
-            sentry_project = self.conf.get("user.curaengine:sentry_project", "", check_type=str)
-            sentry_org = self.conf.get("user.curaengine:sentry_org", "", check_type=str)
+            sentry_project = self.conf.get("user.curaenginele:sentry_project", "", check_type=str)
+            sentry_org = self.conf.get("user.curaenginele:sentry_org", "", check_type=str)
             if sentry_project == "" or sentry_org == "":
                 raise ConanInvalidConfiguration("sentry_project or sentry_org is not set")
 
@@ -198,9 +198,9 @@ class CuraEngineConan(ConanFile):
             else:
                 if self.settings.os == "Linux":
                     self.output.info("Stripping debug symbols from binary")
-                    self.run("objcopy --only-keep-debug --compress-debug-sections=zlib CuraEngine CuraEngine.debug")
-                    self.run("objcopy --strip-debug --strip-unneeded CuraEngine")
-                    self.run("objcopy --add-gnu-debuglink=CuraEngine.debug CuraEngine")
+                    self.run("objcopy --only-keep-debug --compress-debug-sections=zlib CuraEngineLE CuraEngineLE.debug")
+                    self.run("objcopy --strip-debug --strip-unneeded CuraEngineLE")
+                    self.run("objcopy --add-gnu-debuglink=CuraEngineLE.debug CuraEngineLE")
 
                 self.output.info("Uploading debug symbols to sentry")
                 build_source_dir = self.build_path.parent.parent.as_posix()
@@ -220,14 +220,14 @@ class CuraEngineConan(ConanFile):
                 ext = ".js"
             case other:
                 ext = ""
-        copy(self, f"CuraEngine{ext}", src=self.build_folder, dst=path.join(self.package_folder, "bin"))
+        copy(self, f"CuraEngineLE{ext}", src=self.build_folder, dst=path.join(self.package_folder, "bin"))
         copy(self, f"*.d.ts", src=self.build_folder, dst=path.join(self.package_folder, "bin"))
-        copy(self, f"_CuraEngine.*", src=self.build_folder, dst=path.join(self.package_folder, "lib"))
+        copy(self, f"_CuraEngineLE.*", src=self.build_folder, dst=path.join(self.package_folder, "lib"))
         copy(self, "LICENSE*", src=self.source_folder, dst=path.join(self.package_folder, "license"))
 
     def package_info(self):
         ext = ".exe" if self.settings.os == "Windows" else ""
         if self.in_local_cache:
-            self.conf_info.define_path("user.curaengine:curaengine", path.join(self.package_folder, "bin", f"CuraEngine{ext}"))
+            self.conf_info.define_path("user.curaengine:curaengine", path.join(self.package_folder, "bin", f"CuraEngineLE{ext}"))
         else:
-            self.conf_info.define_path("user.curaengine:curaengine", path.join(self.build_folder, f"CuraEngine{ext}"))
+            self.conf_info.define_path("user.curaengine:curaengine", path.join(self.build_folder, f"CuraEngineLE{ext}"))

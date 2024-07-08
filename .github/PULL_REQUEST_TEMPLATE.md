@@ -21,10 +21,3 @@ This fixes... OR This improves... -->
 
 **Test Configuration**:
 * Operating System:
-
-# Checklist:
-
-- [ ] My code follows the style guidelines of this project as described in [UltiMaker Meta](https://github.com/Ultimaker/Meta)
-- [ ] I have read the [Contribution guide](https://github.com/Ultimaker/Cura/blob/main/contributing.md)
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have uploaded any files required to test this change
