@@ -228,6 +228,6 @@ class CuraEngineLEConan(ConanFile):
     def package_info(self):
         ext = ".exe" if self.settings.os == "Windows" else ""
         if self.in_local_cache:
-            self.conf_info.define_path("user.curaengine:curaengine", path.join(self.package_folder, "bin", f"CuraEngineLE{ext}"))
+            self.conf_info.define_path("user.curaenginele:curaenginele", path.join(self.package_folder, "bin", f"CuraEngineLE{ext}"))
         else:
-            self.conf_info.define_path("user.curaengine:curaengine", path.join(self.build_folder, f"CuraEngineLE{ext}"))
+            self.conf_info.define_path("user.curaenginele:curaenginele", path.join(self.build_folder, f"CuraEngineLE{ext}"))

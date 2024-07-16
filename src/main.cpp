@@ -60,7 +60,7 @@ int main(int argc, char** argv)
     std::cerr << std::boolalpha;
 
 
-// Want to set the sentry URL? Use '-c user.curaengine:sentry_url=<url> -o curaengine:enable_sentry=True' with conan install
+// Want to set the sentry URL? Use '-c user.curaenginele:sentry_url=<url> -o curaenginele:enable_sentry=True' with conan install
 #ifdef SENTRY_URL
     if (const auto use_sentry = spdlog::details::os::getenv("USE_SENTRY"); ! use_sentry.empty() && use_sentry == "1")
     {
@@ -71,11 +71,11 @@ int main(int argc, char** argv)
         // This is also the default-path. For further information and recommendations:
         // https://docs.sentry.io/platforms/native/configuration/options/#database-path
 #if defined(__linux__)
-        const auto config_path = std::filesystem::path(fmt::format("{}/.local/share/cura/.sentry-native", std::getenv("HOME")));
+        const auto config_path = std::filesystem::path(fmt::format("{}/.local/share/curale/.sentry-native", std::getenv("HOME")));
 #elif defined(__APPLE__) && defined(__MACH__)
-        const auto config_path = std::filesystem::path(fmt::format("{}/Library/Application Support/cura/.sentry-native", std::getenv("HOME")));
+        const auto config_path = std::filesystem::path(fmt::format("{}/Library/Application Support/curale/.sentry-native", std::getenv("HOME")));
 #elif defined(_WIN64)
-        const auto config_path = std::filesystem::path(fmt::format("{}\\cura\\.sentry-native", std::getenv("APPDATA")));
+        const auto config_path = std::filesystem::path(fmt::format("{}\\curale\\.sentry-native", std::getenv("APPDATA")));
 #endif
         spdlog::info("Sentry config path: {}", config_path);
         sentry_options_set_database_path(options, std::filesystem::absolute(config_path).generic_string().c_str());
@@ -92,7 +92,7 @@ int main(int argc, char** argv)
         }
 
         // Set the actual CuraEngine version
-        sentry_options_set_release(options, fmt::format("curaengine@{}", cura_engine_version).c_str());
+        sentry_options_set_release(options, fmt::format("curaenginele@{}", cura_engine_version).c_str());
         spdlog::info("Starting sentry");
         sentry_init(options);
     }

@@ -25,7 +25,7 @@ jobs:
   conan-recipe-version:
     uses: lulzbot3d/cura-le-workflows/.github/workflows/conan-recipe-version.yml@main
     with:
-      project_name: curaengine
+      project_name: curaenginele
 
   conan-package-export:
     needs: [ conan-recipe-version ]
