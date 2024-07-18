@@ -16,3 +16,5 @@ Designed as a better and faster alternative to the old <br>
 
 You can use CuraEngine separately, in other <br>
 applications and integrate it into your own app.
+
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/lulzbot3d/CuraEngineLE/badge)](https://api.securityscorecards.dev/projects/github.com/lulzbot3d/CuraEngineLE)
