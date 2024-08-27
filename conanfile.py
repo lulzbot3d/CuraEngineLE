@@ -1,5 +1,7 @@
 #  Copyright (c) 2024 UltiMaker
 #  CuraEngine is released under the terms of the AGPLv3 or higher
+#  Copyright (c) 2024 FAME3D LLC
+#  CuraEngineLE is released under the terms of the AGPLv3 or higher
 from shutil import which
 from os import path
 import os
@@ -15,11 +17,11 @@ from conans.tools import which
 required_conan_version = ">=1.58.0 <2.0.0"
 
 
-class CuraEngineConan(ConanFile):
-    name = "curaengine"
+class CuraEngineLEConan(ConanFile):
+    name = "curaenginele"
     license = "AGPL-3.0"
-    author = "UltiMaker"
-    url = "https://github.com/Ultimaker/CuraEngine"
+    author = "UltiMaker, FAME3D LLC"
+    url = "https://github.com/lulzbot3d/CuraEngineLE"
     description = "Powerful, fast and robust engine for converting 3D models into g-code instructions for 3D printers. It is part of the larger open source project Cura."
     topics = ("cura", "protobuf", "gcode", "c++", "curaengine", "libarcus", "gcode-generation", "3D-printing")
     exports = "LICENSE*"
@@ -55,8 +57,8 @@ class CuraEngineConan(ConanFile):
 
     def export_sources(self):
         copy(self, "CMakeLists.txt", self.recipe_folder, self.export_sources_folder)
-        copy(self, "Cura.proto", self.recipe_folder, self.export_sources_folder)
-        copy(self, "CuraEngine.ico", self.recipe_folder, self.export_sources_folder)
+        copy(self, "CuraLE.proto", self.recipe_folder, self.export_sources_folder)
+        copy(self, "CuraEngineLE.ico", self.recipe_folder, self.export_sources_folder)
         copy(self, "CuraEngine.rc", self.recipe_folder, self.export_sources_folder)
         copy(self, "LICENSE", self.recipe_folder, self.export_sources_folder)
         copy(self, "*", path.join(self.recipe_folder, "src"), path.join(self.export_sources_folder, "src"))

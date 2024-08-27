@@ -1,0 +1,25 @@
+main ICON "CuraEngineLE.ico"
+
+1 VERSIONINFO
+FILEVERSION     1,0,0,0
+PRODUCTVERSION  1,0,0,0
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "080904E4"
+    BEGIN
+      VALUE "CompanyName", "FAME3D LLC."
+      VALUE "FileDescription", "Slicing engine for Cura LulzBot Edition"
+      VALUE "FileVersion", "1.0"
+      VALUE "InternalName", "CuraEngineLE"
+      VALUE "LegalCopyright", "Ultimaker BV., FAME3D LLC."
+      VALUE "OriginalFilename", "CuraEngineLE.exe"
+      VALUE "ProductName", "CuraEngineLE"
+      VALUE "ProductVersion", "1.0"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x809, 1252
+  END
+END

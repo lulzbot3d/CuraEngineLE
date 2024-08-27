@@ -1,13 +1,15 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # CuraEngine is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2024 FAME3D LLC.
+# CuraEngineLE is released under the terms of the AGPLv3 or higher.
 
 cmake_policy(SET CMP0091 NEW)  # For MSVC flags, will be ignored on non-Windows OS's
 cmake_minimum_required(VERSION 3.20)
-project(CuraEngine)
-find_package(standardprojectsettings REQUIRED)  # imports the cmake module https://github.com/Ultimaker/conan-ultimaker-index/recipes/standardprojectsettings
+project(CuraEngineLE)
+find_package(standardprojectsettings REQUIRED)  # imports the cmake module https://github.com/lulzbot3d/conan-lulzbot-index/recipes/standardprojectsettings
 AssureOutOfSourceBuilds()
 
-option(ENABLE_ARCUS "Enable support for ARCUS" ON)
+option(ENABLE_ARCUS "Enable support for ArcusLE" ON)
 option(ENABLE_TESTING "Build with unit tests" OFF)
 option(ENABLE_BENCHMARKS "Build with Benchmarks" OFF)
 option(EXTENSIVE_WARNINGS "Build with all warnings" ON)
@@ -27,19 +29,19 @@ MESSAGE(STATUS "Building with plugins support: ${ENABLE_PLUGINS}")
 if (${ENABLE_PLUGINS})
     find_package(asio-grpc REQUIRED)
     find_package(gRPC REQUIRED)
-    find_package(curaengine_grpc_definitions REQUIRED)
+    find_package(curaenginele_grpc_definitions REQUIRED)
     find_package(semver REQUIRED)
     MESSAGE(STATUS "Plugin secure remotes allowed: ${ENABLE_REMOTE_PLUGINS}")
 endif ()
 
-message(STATUS "Building with Arcus: ${ENABLE_ARCUS}")
+message(STATUS "Building with ArcusLE: ${ENABLE_ARCUS}")
 if (${ENABLE_ARCUS})
-    find_package(arcus REQUIRED)
-    protobuf_generate_cpp(engine_PB_SRCS engine_PB_HEADERS Cura.proto)
+    find_package(arcusle REQUIRED)
+    protobuf_generate_cpp(engine_PB_SRCS engine_PB_HEADERS CuraLE.proto)
 endif ()
 
-### Compiling CuraEngine ###
-# First compile all of CuraEngine as library.
+### Compiling CuraEngineLE ###
+# First compile all of CuraEngineLE as library.
 
 set(engine_SRCS # Except main.cpp.
         src/Application.cpp
@@ -167,12 +169,12 @@ set(engine_SRCS # Except main.cpp.
         src/geometry/MixedLinesSet.cpp
 )
 
-add_library(_CuraEngine STATIC ${engine_SRCS} ${engine_PB_SRCS})
+add_library(_CuraEngineLE STATIC ${engine_SRCS} ${engine_PB_SRCS})
 if (ENABLE_THREADING)
-    use_threads(_CuraEngine)
+    use_threads(_CuraEngineLE)
 endif ()
 
-target_include_directories(_CuraEngine
+target_include_directories(_CuraEngineLE
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
@@ -180,7 +182,7 @@ target_include_directories(_CuraEngine
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> # Include Cura.pb.h
 )
 
-target_compile_definitions(_CuraEngine
+target_compile_definitions(_CuraEngineLE
         PUBLIC
         $<$<BOOL:${ENABLE_ARCUS}>:ARCUS>
         $<$<BOOL:${ENABLE_PLUGINS}>:ENABLE_PLUGINS>
@@ -195,14 +197,14 @@ target_compile_definitions(_CuraEngine
         $<$<CONFIG:Debug>:DEBUG>
 )
 
-enable_sanitizers(_CuraEngine)
+enable_sanitizers(_CuraEngineLE)
 
 if (${EXTENSIVE_WARNINGS})
-    set_project_warnings(_CuraEngine)
+    set_project_warnings(_CuraEngineLE)
 endif ()
 
 if (ENABLE_ARCUS)
-    target_link_libraries(_CuraEngine PUBLIC arcus::arcus)
+    target_link_libraries(_CuraEngineLE PUBLIC arcusle::arcusle)
 endif ()
 
 find_package(mapbox-wagyu REQUIRED)
@@ -223,7 +225,7 @@ if (ENABLE_TESTING)
     find_package(GTest REQUIRED)
 endif ()
 
-target_link_libraries(_CuraEngine
+target_link_libraries(_CuraEngineLE
         PUBLIC
         spdlog::spdlog
         range-v3::range-v3
@@ -233,24 +235,24 @@ target_link_libraries(_CuraEngine
         rapidjson
         stb::stb
         boost::boost
-        scripta::scripta
+        scriptale::scriptale
         $<$<TARGET_EXISTS:semver::semver>:semver::semver>
-        $<$<TARGET_EXISTS:curaengine_grpc_definitions::curaengine_grpc_definitions>:curaengine_grpc_definitions::curaengine_grpc_definitions>
+        $<$<TARGET_EXISTS:curaenginele_grpc_definitions::curaenginele_grpc_definitions>:curaenginele_grpc_definitions::curaenginele_grpc_definitions>
         $<$<TARGET_EXISTS:asio-grpc::asio-grpc>:asio-grpc::asio-grpc>
         $<$<TARGET_EXISTS:grpc::grpc>:grpc::grpc>
         $<$<TARGET_EXISTS:protobuf::libprotobuf>:protobuf::libprotobuf>
         $<$<TARGET_EXISTS:sentry::sentry>:sentry::sentry>
         $<$<TARGET_EXISTS:GTest::gtest>:GTest::gtest>)
 
-target_compile_definitions(_CuraEngine PRIVATE
+target_compile_definitions(_CuraEngineLE PRIVATE
         $<$<BOOL:${ENABLE_SENTRY}>:SENTRY_URL=\"${SENTRY_URL}\">
 )
 
 if (NOT WIN32)
-    add_executable(CuraEngine src/main.cpp) # Then compile main.cpp as separate executable, and link the library to it.
+    add_executable(CuraEngineLE src/main.cpp) # Then compile main.cpp as separate executable, and link the library to it.
 else ()
     message(STATUS "Using windres")
-    set(RES_FILES "CuraEngine.rc")
+    set(RES_FILES "CuraEngineLE.rc")
     ENABLE_LANGUAGE(RC)
     if (NOT MSVC)
         SET(CMAKE_RC_COMPILER_INIT windres)
@@ -258,26 +260,26 @@ else ()
                 "<CMAKE_RC_COMPILER> <FLAGS> -O coff <DEFINES> -i <SOURCE> -o <OBJECT>"
         )
     endif ()
-    add_executable(CuraEngine src/main.cpp ${RES_FILES}) # ..., but don't forget the glitter!
+    add_executable(CuraEngineLE src/main.cpp ${RES_FILES}) # ..., but don't forget the glitter!
     if (ENABLE_SENTRY)
-        set_target_properties(CuraEngine PROPERTIES LINK_FLAGS "/DEBUG:FULL")
+        set_target_properties(CuraEngineLE PROPERTIES LINK_FLAGS "/DEBUG:FULL")
     endif ()
 endif (NOT WIN32)
 
 if (ENABLE_THREADING)
-    use_threads(CuraEngine)
+    use_threads(CuraEngineLE)
 endif ()
 
 if (CMAKE_CXX_PLATFORM_ID STREQUAL "emscripten")
     message(STATUS "Building for Emscripten")
-    target_link_options(_CuraEngine PUBLIC -Wno-unused-command-line-argument -sINVOKE_RUN=0 -sEXPORT_NAME=CuraEngine -sEXPORTED_RUNTIME_METHODS=[callMain,FS] -sFORCE_FILESYSTEM=1 -sALLOW_MEMORY_GROWTH=1 -sEXPORT_ES6=1 -sMODULARIZE=1 -sSINGLE_FILE=1 -sENVIRONMENT=worker -sERROR_ON_UNDEFINED_SYMBOLS=0 -lembind --embind-emit-tsd CuraEngine.d.ts)
+    target_link_options(_CuraEngineLE PUBLIC -Wno-unused-command-line-argument -sINVOKE_RUN=0 -sEXPORT_NAME=CuraEngineLE -sEXPORTED_RUNTIME_METHODS=[callMain,FS] -sFORCE_FILESYSTEM=1 -sALLOW_MEMORY_GROWTH=1 -sEXPORT_ES6=1 -sMODULARIZE=1 -sSINGLE_FILE=1 -sENVIRONMENT=worker -sERROR_ON_UNDEFINED_SYMBOLS=0 -lembind --embind-emit-tsd CuraEngineLE.d.ts)
 endif ()
 
-target_link_libraries(CuraEngine PRIVATE
-        _CuraEngine
+target_link_libraries(CuraEngineLE PRIVATE
+        _CuraEngineLE
         $<$<TARGET_EXISTS:sentry::sentry>:sentry::sentry>
 )
-target_compile_definitions(CuraEngine PRIVATE
+target_compile_definitions(CuraEngineLE PRIVATE
         $<$<BOOL:${ENABLE_SENTRY}>:SENTRY_URL=\"${SENTRY_URL}\">
         VERSION=\"${CURA_ENGINE_VERSION}\"
 )
@@ -298,17 +300,17 @@ if (ENABLE_TESTING OR ENABLE_BENCHMARKS)
     target_compile_definitions(test_helpers PUBLIC $<$<BOOL:${BUILD_TESTING}>:BUILD_TESTS> $<$<BOOL:${ENABLE_ARCUS}>:ARCUS>)
     target_include_directories(test_helpers PUBLIC "include" ${CMAKE_BINARY_DIR}/generated)
     target_link_libraries(test_helpers PRIVATE
-            _CuraEngine
+            _CuraEngineLE
             GTest::gtest
             GTest::gmock
             clipper::clipper
             mapbox-wagyu::mapbox-wagyu
-            $<$<TARGET_EXISTS:curaengine_grpc_definitions::curaengine_grpc_definitions>:curaengine_grpc_definitions::curaengine_grpc_definitions>
+            $<$<TARGET_EXISTS:curaenginele_grpc_definitions::curaenginele_grpc_definitions>:curaenginele_grpc_definitions::curaenginele_grpc_definitions>
             $<$<TARGET_EXISTS:asio-grpc::asio-grpc>:asio-grpc::asio-grpc>
             $<$<TARGET_EXISTS:grpc::grpc>:grpc::grpc>
             $<$<TARGET_EXISTS:protobuf::libprotobuf>:protobuf::libprotobuf>)
     if (ENABLE_ARCUS)
-        target_link_libraries(test_helpers PUBLIC arcus::arcus)
+        target_link_libraries(test_helpers PUBLIC arcusle::arcusle)
     endif ()
 endif ()
 

@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish-test-results:
-    uses: ultimaker/cura-workflows/.github/workflows/unit-test-post.yml@main
+    uses: lulzbot3d/cura-le-workflows/.github/workflows/unit-test-post.yml@main
     with:
       event: ${{ github.event.workflow_run.event }}
       conclusion: ${{ github.event.workflow_run.conclusion }}

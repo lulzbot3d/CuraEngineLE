@@ -42,12 +42,12 @@ env:
 
 jobs:
   conan-recipe-version:
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
+    uses: lulzbot3d/cura-le-workflows/.github/workflows/conan-recipe-version.yml@main
     with:
-      project_name: curaengine
+      project_name: curaenginele
 
   testing:
-    uses: ultimaker/cura-workflows/.github/workflows/unit-test.yml@main
+    uses: lulzbot3d/cura-le-workflows/.github/workflows/unit-test.yml@main
     needs: [ conan-recipe-version ]
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}

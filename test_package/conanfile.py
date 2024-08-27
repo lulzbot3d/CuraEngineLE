@@ -1,12 +1,14 @@
 #  Copyright (c) 2023 Ultimaker B.V.
 #  CuraEngine is released under the terms of the AGPLv3 or higher
+#  Copyright (c) 2024 FAME3D LLC.
+#  CuraEngineLE is released under the terms of the AGPLv3 or higher
 
 from conan import ConanFile
 from conan.tools.env import VirtualRunEnv
 from conan.tools.build import can_run
 
 
-class CuraEngineTestConan(ConanFile):
+class CuraEngineLETestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "VirtualRunEnv"
     test_type = "explicit"
@@ -23,4 +25,4 @@ class CuraEngineTestConan(ConanFile):
 
     def test(self):
         if can_run(self):
-            self.run("CuraEngine help", env = "conanrun")
+            self.run("CuraEngineLE help", env = "conanrun")

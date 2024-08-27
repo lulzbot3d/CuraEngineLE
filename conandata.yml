@@ -1,6 +1,6 @@
 version: "5.8.0"
 requirements:
-  - "scripta/0.1.0@ultimaker/testing"
+  - "scripta/0.1.0@lulzbot/testing"
 requirements_arcus:
   - "arcus/5.3.1"
 requirements_plugins:
