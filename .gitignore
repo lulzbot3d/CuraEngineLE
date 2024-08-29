@@ -64,6 +64,7 @@ nbproject/*
 .cproject
 .project
 .settings
+.vscode
 
 ## Documentation.
 documentation/html/*

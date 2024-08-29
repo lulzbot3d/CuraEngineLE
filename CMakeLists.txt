@@ -37,7 +37,7 @@ endif ()
 message(STATUS "Building with ArcusLE: ${ENABLE_ARCUS}")
 if (${ENABLE_ARCUS})
     find_package(arcusle REQUIRED)
-    protobuf_generate_cpp(engine_PB_SRCS engine_PB_HEADERS CuraLE.proto)
+    protobuf_generate_cpp(engine_PB_SRCS engine_PB_HEADERS Cura.proto)
 endif ()
 
 ### Compiling CuraEngineLE ###

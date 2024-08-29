@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package curale.proto;
+package cura.proto;
 
 message ObjectList
 {

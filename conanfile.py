@@ -57,9 +57,9 @@ class CuraEngineLEConan(ConanFile):
 
     def export_sources(self):
         copy(self, "CMakeLists.txt", self.recipe_folder, self.export_sources_folder)
-        copy(self, "CuraLE.proto", self.recipe_folder, self.export_sources_folder)
+        copy(self, "Cura.proto", self.recipe_folder, self.export_sources_folder)
         copy(self, "CuraEngineLE.ico", self.recipe_folder, self.export_sources_folder)
-        copy(self, "CuraEngine.rc", self.recipe_folder, self.export_sources_folder)
+        copy(self, "CuraEngineLE.rc", self.recipe_folder, self.export_sources_folder)
         copy(self, "LICENSE", self.recipe_folder, self.export_sources_folder)
         copy(self, "*", path.join(self.recipe_folder, "src"), path.join(self.export_sources_folder, "src"))
         copy(self, "*", path.join(self.recipe_folder, "include"), path.join(self.export_sources_folder, "include"))
@@ -70,8 +70,8 @@ class CuraEngineLEConan(ConanFile):
     def config_options(self):
         if not self.options.enable_plugins:
             del self.options.enable_remote_plugins
-        sentry_project = self.conf.get("user.curaengine:sentry_project", "", check_type=str)
-        sentry_org = self.conf.get("user.curaengine:sentry_org", "", check_type=str)
+        sentry_project = self.conf.get("user.curaenginele:sentry_project", "", check_type=str)
+        sentry_org = self.conf.get("user.curaenginele:sentry_org", "", check_type=str)
         if os.environ.get('SENTRY_TOKEN', None) is None or sentry_project == "" or sentry_org == "":
             del self.options.enable_sentry
 
