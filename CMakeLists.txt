@@ -297,7 +297,7 @@ if (ENABLE_TESTING OR ENABLE_BENCHMARKS)
     endif ()
 
     add_library(test_helpers ${TESTS_HELPERS_SRC})
-    target_compile_definitions(test_helpers PUBLIC $<$<BOOL:${BUILD_TESTING}>:BUILD_TESTS> $<$<BOOL:${ENABLE_ARCUS}>:ARCUS>)
+    target_compile_definitions(test_helpers PUBLIC $<$<BOOL:${BUILD_TESTING}>:BUILD_TESTS> $<$<BOOL:${ENABLE_ARCUS}>:ARCUSLE>)
     target_include_directories(test_helpers PUBLIC "include" ${CMAKE_BINARY_DIR}/generated)
     target_link_libraries(test_helpers PRIVATE
             _CuraEngineLE
