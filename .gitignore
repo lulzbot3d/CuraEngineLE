@@ -8,6 +8,12 @@
 *.bak
 NUL
 *.gcode
+conanbuild.sh
+conanbuildenv-release-x86_64.sh
+conanrun.sh
+conanrunenv-release-x86_64.sh
+deactivate_conanbuild.sh
+deactivate_conanrun.sh
 
 ## Directories used for other stuff
 Trash/*

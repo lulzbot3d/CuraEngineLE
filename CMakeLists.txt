@@ -215,7 +215,7 @@ find_package(Boost REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(fmt REQUIRED)
 find_package(range-v3 REQUIRED)
-find_package(scripta REQUIRED)
+find_package(scriptale REQUIRED)
 
 if (ENABLE_SENTRY)
     find_package(sentry REQUIRED)
