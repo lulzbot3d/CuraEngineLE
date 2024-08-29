@@ -76,10 +76,11 @@ jobs:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
     secrets: inherit
 
-  conan-package-create-wasm:
-    needs: [ conan-recipe-version, conan-package-export ]
-    if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
-    uses: lulzbot3d/cura-le-workflows/.github/workflows/conan-package-create-wasm.yml@main
-    with:
-      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-    secrets: inherit
+#  Comment this out for now, we don't need it. Interesting to know it is a thing, however.
+#  conan-package-create-wasm:
+#    needs: [ conan-recipe-version, conan-package-export ]
+#    if: ${{ (github.event_name == 'push' && (github.ref_name == 'main' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
+#    uses: lulzbot3d/cura-le-workflows/.github/workflows/conan-package-create-wasm.yml@main
+#    with:
+#      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+#    secrets: inherit
