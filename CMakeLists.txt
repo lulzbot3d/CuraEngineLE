@@ -9,7 +9,7 @@ project(CuraEngineLE)
 find_package(standardprojectsettings REQUIRED)  # imports the cmake module https://github.com/lulzbot3d/conan-lulzbot-index/recipes/standardprojectsettings
 AssureOutOfSourceBuilds()
 
-option(ENABLE_ARCUS "Enable support for ArcusLE" ON)
+option(ENABLE_ARCUS "Enable support for Arcus" ON)
 option(ENABLE_TESTING "Build with unit tests" OFF)
 option(ENABLE_BENCHMARKS "Build with Benchmarks" OFF)
 option(EXTENSIVE_WARNINGS "Build with all warnings" ON)
@@ -34,9 +34,9 @@ if (${ENABLE_PLUGINS})
     MESSAGE(STATUS "Plugin secure remotes allowed: ${ENABLE_REMOTE_PLUGINS}")
 endif ()
 
-message(STATUS "Building with ArcusLE: ${ENABLE_ARCUS}")
+message(STATUS "Building with Arcus: ${ENABLE_ARCUS}")
 if (${ENABLE_ARCUS})
-    find_package(arcusle REQUIRED)
+    find_package(arcus REQUIRED)
     protobuf_generate_cpp(engine_PB_SRCS engine_PB_HEADERS Cura.proto)
 endif ()
 
@@ -204,7 +204,7 @@ if (${EXTENSIVE_WARNINGS})
 endif ()
 
 if (ENABLE_ARCUS)
-    target_link_libraries(_CuraEngineLE PUBLIC arcusle::arcusle)
+    target_link_libraries(_CuraEngineLE PUBLIC arcus::arcus)
 endif ()
 
 find_package(mapbox-wagyu REQUIRED)
@@ -297,7 +297,7 @@ if (ENABLE_TESTING OR ENABLE_BENCHMARKS)
     endif ()
 
     add_library(test_helpers ${TESTS_HELPERS_SRC})
-    target_compile_definitions(test_helpers PUBLIC $<$<BOOL:${BUILD_TESTING}>:BUILD_TESTS> $<$<BOOL:${ENABLE_ARCUS}>:ARCUSLE>)
+    target_compile_definitions(test_helpers PUBLIC $<$<BOOL:${BUILD_TESTING}>:BUILD_TESTS> $<$<BOOL:${ENABLE_ARCUS}>:ARCUS>)
     target_include_directories(test_helpers PUBLIC "include" ${CMAKE_BINARY_DIR}/generated)
     target_link_libraries(test_helpers PRIVATE
             _CuraEngineLE
@@ -310,7 +310,7 @@ if (ENABLE_TESTING OR ENABLE_BENCHMARKS)
             $<$<TARGET_EXISTS:grpc::grpc>:grpc::grpc>
             $<$<TARGET_EXISTS:protobuf::libprotobuf>:protobuf::libprotobuf>)
     if (ENABLE_ARCUS)
-        target_link_libraries(test_helpers PUBLIC arcusle::arcusle)
+        target_link_libraries(test_helpers PUBLIC arcus::arcus)
     endif ()
 endif ()
 

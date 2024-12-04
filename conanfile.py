@@ -23,7 +23,7 @@ class CuraEngineLEConan(ConanFile):
     author = "UltiMaker, FAME3D LLC"
     url = "https://github.com/lulzbot3d/CuraEngineLE"
     description = "Powerful, fast and robust engine for converting 3D models into g-code instructions for 3D printers. It is part of the larger open source project Cura."
-    topics = ("curale", "protobuf", "gcode", "c++", "curaenginele", "libarcusle", "gcode-generation", "3D-printing")
+    topics = ("curale", "protobuf", "gcode", "c++", "curaenginele", "libarcus", "gcode-generation", "3D-printing")
     exports = "LICENSE*"
     settings = "os", "compiler", "build_type", "arch"
 
@@ -81,12 +81,12 @@ class CuraEngineLEConan(ConanFile):
         if self.options.enable_arcus or self.options.enable_plugins:
             self.options["protobuf"].shared = False
         if self.options.enable_arcus:
-            self.options["arcusle"].shared = True
+            self.options["arcus"].shared = True
         if self.settings.os == "Linux":
             self.options["openssl"].shared = True
         if self.options.get_safe("enable_sentry", False):
             self.options["sentry-native"].backend = "breakpad"
-            self.options["arcusle"].enable_sentry = True
+            self.options["arcus"].enable_sentry = True
             self.options["clipper"].enable_sentry = True
 
     def validate(self):
@@ -110,7 +110,7 @@ class CuraEngineLEConan(ConanFile):
         for req in self.conan_data["requirements"]:
             self.requires(req)
         if self.options.enable_arcus:
-            for req in self.conan_data["requirements_arcusle"]:
+            for req in self.conan_data["requirements_arcus"]:
                 self.requires(req)
         if self.options.get_safe("enable_sentry", False):
             self.requires("sentry-native/0.6.5")
