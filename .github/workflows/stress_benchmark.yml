@@ -46,7 +46,7 @@ jobs:
     needs: [ conan-recipe-version ]
     uses: lulzbot3d/CuraLE_Workflows/.github/workflows/benchmark.yml@main
     with:
-      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+      recipe_id_full: ${{ needs.conan-recipe-version.outputs.package_version_full }}
       conan_extra_args: "-o curaengine:enable_benchmarks=True"
       benchmark_cmd: "stress_benchmark/stress_benchmark -o benchmark_result.json"
       name: "Stress Benchmark"
