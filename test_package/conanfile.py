@@ -10,7 +10,6 @@ from conan.tools.build import can_run
 
 class CuraEngineLETestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "VirtualRunEnv"
     test_type = "explicit"
 
     def requirements(self):
@@ -20,9 +19,6 @@ class CuraEngineLETestConan(ConanFile):
         venv = VirtualRunEnv(self)
         venv.generate()
 
-    def build(self):
-        pass
-
     def test(self):
         if can_run(self):
-            self.run("CuraEngineLE help", env = "conanrun")
+            self.run("CuraEngine help", env = "conanrun")

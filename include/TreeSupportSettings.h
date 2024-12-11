@@ -39,7 +39,7 @@ struct TreeSupportSettings
         , maximum_move_distance((angle < TAU / 4) ? std::llround(tan(angle) * layer_height) : std::numeric_limits<coord_t>::max())
         , maximum_move_distance_slow((angle_slow < TAU / 4) ? std::llround(tan(angle_slow) * layer_height) : std::numeric_limits<coord_t>::max())
         , support_bottom_layers(mesh_group_settings.get<bool>("support_bottom_enable") ? round_divide(mesh_group_settings.get<coord_t>("support_bottom_height"), layer_height) : 0)
-        , tip_layers(std::max((branch_radius - min_radius) / (support_line_width / 3), branch_radius / layer_height))
+        , tip_layers(std::max(std::max((branch_radius - min_radius) / (support_line_width / 3), branch_radius / layer_height), 1LL))
         , // Ensure lines always stack nicely even if layer height is large
         diameter_angle_scale_factor(sin(mesh_group_settings.get<AngleRadians>("support_tree_branch_diameter_angle")) * layer_height / branch_radius)
         , max_to_model_radius_increase(mesh_group_settings.get<coord_t>("support_tree_max_diameter_increase_by_merges_when_support_to_model") / 2)
@@ -54,7 +54,7 @@ struct TreeSupportSettings
                                                                                                                              : RestPreference::BUILDPLATE)
         , xy_distance(mesh_group_settings.get<coord_t>("support_xy_distance"))
         , bp_radius(mesh_group_settings.get<coord_t>("support_tree_bp_diameter") / 2)
-        , diameter_scale_bp_radius(std::min(sin(0.7) * static_cast<double>(layer_height / branch_radius), 1.0 / (branch_radius / (support_line_width / 2.0))))
+        , diameter_scale_bp_radius(std::min(sin(0.7) * static_cast<double>(layer_height) / static_cast<double>(branch_radius), 1.0 / (branch_radius / (support_line_width / 2.0))))
         , // Either 40° or as much as possible so that 2 lines will overlap by at least 50%, whichever is smaller.
         support_overrides(mesh_group_settings.get<SupportDistPriority>("support_xy_overrides_z"))
         , xy_min_distance(support_overrides == SupportDistPriority::Z_OVERRIDES_XY ? mesh_group_settings.get<coord_t>("support_xy_distance_overhang") : xy_distance)
