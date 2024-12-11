@@ -1,6 +1,6 @@
 # CuraEngineLE
 
-![CuraLE Logo](CuraEngineLE.ico)
+![CuraLE Logo](CuraEngine.ico)
 
 [![Badge Conan]][Conan]
 [![Badge Test]][Test]
@@ -27,7 +27,7 @@ You can use CuraEngineLE separately, in other applications and integrate it into
 
 <!---------------------------------[ Badges ]---------------------------------->
 
-[Badge License]: https://img.shields.io/badge/License-AGPL3-336887.svg?style=for-the-badge&logoColor=white&logo=GNU
+[Badge License]: https://img.shields.io/github/license/lulzbot3d/CuraEngineLE?style=for-the-badge&logoColor=white&logo=GNU
 [Badge Conan]: https://img.shields.io/github/actions/workflow/status/lulzbot3d/CuraEngineLE/conan-package.yml?style=for-the-badge&logoColor=white&logo=Conan&label=Conan%20Package
 [Badge Test]: https://img.shields.io/github/actions/workflow/status/lulzbot3d/CuraEngineLE/unit-test.yml?style=for-the-badge&logoColor=white&logo=Codacy&label=Unit%20Test
 [Badge Scorecard]: https://img.shields.io/ossf-scorecard/github.com/lulzbot3d/CuraEngineLE?style=for-the-badge&logo=GitHub&label=OpenSSF%20Scorecard
