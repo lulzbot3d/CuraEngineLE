@@ -1,4 +1,5 @@
 name: Stress Benchmark
+
 on:
   push:
     paths:
@@ -27,29 +28,21 @@ permissions:
   contents: write
   deployments: write
 
-env:
-  CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
-  CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
-
 
 jobs:
   check_actor:
     uses: lulzbot3d/CuraLE_Workflows/.github/workflows/check-actor.yml@main
     secrets: inherit
 
-  conan-recipe-version:
-    needs: [ check_actor ]
-    if: ${{ needs.check_actor.outputs.proceed == 'true' }}
-    uses: lulzbot3d/CuraLE_Workflows/.github/workflows/conan-recipe-version.yml@main
-
   benchmark:
-    needs: [ conan-recipe-version ]
     uses: lulzbot3d/CuraLE_Workflows/.github/workflows/benchmark.yml@main
     with:
-      conan_extra_args: "-o curaengine:enable_benchmarks=True"
+      conan_extra_args: "-o \"curaengine/*:enable_benchmarks=True\""
       benchmark_cmd: "stress_benchmark/stress_benchmark -o benchmark_result.json"
       name: "Stress Benchmark"
       output_file_path: "build/Release/benchmark_result.json"
       data_dir: "dev/stress_bench"
       tool: "customSmallerIsBetter"
+      alert_threshold: "150%"
+      alert_comment_cc_users: "@sfjelstad"
     secrets: inherit
