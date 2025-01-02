@@ -71,11 +71,11 @@ int main(int argc, char** argv)
         // This is also the default-path. For further information and recommendations:
         // https://docs.sentry.io/platforms/native/configuration/options/#database-path
 #if defined(__linux__)
-        const auto config_path = std::filesystem::path(fmt::format("{}/.local/share/cura/.sentry-native", std::getenv("HOME")));
+        const auto config_path = std::filesystem::path(fmt::format("{}/.local/share/CuraLE/.sentry-native", std::getenv("HOME")));
 #elif defined(__APPLE__) && defined(__MACH__)
-        const auto config_path = std::filesystem::path(fmt::format("{}/Library/Application Support/cura/.sentry-native", std::getenv("HOME")));
+        const auto config_path = std::filesystem::path(fmt::format("{}/Library/Application Support/CuraLE/.sentry-native", std::getenv("HOME")));
 #elif defined(_WIN64)
-        const auto config_path = std::filesystem::path(fmt::format("{}\\cura\\.sentry-native", std::getenv("APPDATA")));
+        const auto config_path = std::filesystem::path(fmt::format("{}\\CuraLE\\.sentry-native", std::getenv("APPDATA")));
 #endif
         spdlog::info("Sentry config path: {}", config_path);
         sentry_options_set_database_path(options, std::filesystem::absolute(config_path).generic_string().c_str());
