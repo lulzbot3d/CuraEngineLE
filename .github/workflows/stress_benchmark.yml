@@ -1,5 +1,4 @@
 name: Stress Benchmark
-
 on:
   push:
     paths:
@@ -43,6 +42,4 @@ jobs:
       output_file_path: "benchmark_result.json"
       data_dir: "dev/stress_bench"
       tool: "customSmallerIsBetter"
-      alert_threshold: "150%"
-      alert_comment_cc_users: "@sfjelstad"
     secrets: inherit

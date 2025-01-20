@@ -3,11 +3,11 @@
 
 cmake_policy(SET CMP0091 NEW)  # For MSVC flags, will be ignored on non-Windows OS's
 cmake_minimum_required(VERSION 3.20)
-project(CuraEngineLE)
+project(CuraEngine)
 find_package(standardprojectsettings REQUIRED)  # imports the cmake module https://github.com/lulzbot3d/Conan_LulzBot_Index/recipes/standardprojectsettings
 AssureOutOfSourceBuilds()
 
-option(ENABLE_ARCUS "Enable support for Arcus" ON)
+option(ENABLE_ARCUS "Enable support for ARCUS" ON)
 option(ENABLE_TESTING "Build with unit tests" OFF)
 option(ENABLE_BENCHMARKS "Build with Benchmarks" OFF)
 option(EXTENSIVE_WARNINGS "Build with all warnings" ON)
