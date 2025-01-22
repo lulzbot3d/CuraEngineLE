@@ -1,0 +1,14 @@
+name: Update Fork
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: '0 13 * * 1-5'
+
+jobs:
+  conan-package:
+    uses: lulzbot3d/CuraLE_Workflows/.github/workflows/update-lulzbot-forks.yml@main
+    with:
+      repo: 'CuraEngine'
+    secrets: inherit
