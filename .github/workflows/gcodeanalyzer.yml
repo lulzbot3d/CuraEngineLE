@@ -1,24 +1,6 @@
 name: GcodeAnalyzer
 on:
-  push:
-    paths:
-      - 'include/**'
-      - 'src/**'
-      - '.github/workflows/gcodeanalyzer.yml'
-    branches:
-      - main
-  pull_request:
-    types: [ opened, reopened, synchronize ]
-    paths:
-      - 'include/**'
-      - 'src/**'
-      - '.github/workflows/gcodeanalyzer.yml'
-    branches:
-      - main
-      - 'CURA-*'
-      - 'PP-*'
-      - 'NP-*'
-      - '[0-9]+.[0-9]+'
+  workflow_dispatch:
 
 permissions:
   contents: write
