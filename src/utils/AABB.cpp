@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <limits>
 
+#include "geometry/OpenPolyline.h"
 #include "geometry/Polygon.h"
 #include "geometry/Shape.h"
 #include "utils/linearAlg2D.h"
@@ -26,11 +27,27 @@ AABB::AABB(const Point2LL& min, const Point2LL& max)
 {
 }
 
+AABB::AABB(const std::initializer_list<Point2LL>& points)
+    : AABB()
+{
+    for (const auto& pt : points)
+    {
+        include(pt);
+    }
+}
+
 AABB::AABB(const Shape& shape)
     : min_(POINT_MAX, POINT_MAX)
     , max_(POINT_MIN, POINT_MIN)
 {
     calculate(shape);
+}
+
+AABB::AABB(const OpenLinesSet& lines)
+    : min_(POINT_MAX, POINT_MAX)
+    , max_(POINT_MIN, POINT_MIN)
+{
+    calculate(lines);
 }
 
 AABB::AABB(const PointsSet& poly)
@@ -77,6 +94,19 @@ void AABB::calculate(const Shape& shape)
     for (const Polygon& poly : shape)
     {
         for (const Point2LL& point : poly)
+        {
+            include(point);
+        }
+    }
+}
+
+void AABB::calculate(const OpenLinesSet& lines)
+{
+    min_ = Point2LL(POINT_MAX, POINT_MAX);
+    max_ = Point2LL(POINT_MIN, POINT_MIN);
+    for (const OpenPolyline& line : lines)
+    {
+        for (const Point2LL& point : line)
         {
             include(point);
         }

@@ -152,6 +152,7 @@ private:
     Comb* comb_;
     coord_t comb_move_inside_distance_; //!< Whenever using the minimum boundary for combing it tries to move the coordinates inside by this distance after calculating the combing.
     Shape bridge_wall_mask_; //!< The regions of a layer part that are not supported, used for bridging
+    AABB bridge_wall_mask_bb_; //!< Cached bounding box for the above value.
     std::vector<OverhangMask> overhang_masks_; //!< The regions of a layer part where the walls overhang, calculated for multiple overhang angles. The latter is the most
                                                //!< overhanging. For a visual explanation of the result, see doc/gradual_overhang_speed.svg
     Shape seam_overhang_mask_; //!< The regions of a layer part where the walls overhang, specifically as defined for the seam
@@ -510,6 +511,7 @@ public:
      * If unset, this causes it to start near the last planned location.
      * \param scarf_seam Indicates whether we may use a scarf seam for the path
      * \param smooth_speed Indicates whether we may use a speed gradient for the path
+     * \param texture_data_provider The texture provider to be used to place the seam
      */
     void addPolygonsByOptimizer(
         const Shape& polygons,
@@ -523,7 +525,8 @@ public:
         bool reverse_order = false,
         const std::optional<Point2LL> start_near_location = std::optional<Point2LL>(),
         bool scarf_seam = false,
-        bool smooth_acceleration = false);
+        bool smooth_acceleration = false,
+        const std::shared_ptr<TextureDataProvider>& texture_data_provider = nullptr);
 
     /*!
      * Add a single line that is part of a wall to the gcode.
@@ -1077,9 +1080,10 @@ private:
      * \param wall The currently processed wall
      * \param current_index The index of the currently processed point
      * \param min_bridge_line_len The minimum line width to allow an extrusion move to be processed as a bridge move
+     * \param direction The direction to look for, 1 to use the actual line direction, -1 to go backwards
      * \return The distance from the start of the current wall line to the first bridge segment
      */
-    coord_t computeDistanceToBridgeStart(const ExtrusionLine& wall, const size_t current_index, const coord_t min_bridge_line_len) const;
+    [[nodiscard]] coord_t computeDistanceToBridgeStart(const ExtrusionLine& wall, const size_t current_index, const coord_t min_bridge_line_len, const int direction = 1) const;
 
     /*!
      * Compute the Z-hop and travel duration for the given travel path
