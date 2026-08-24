@@ -601,6 +601,7 @@ private:
      * \param[out] added_something Whether this function added anything to the layer plan
      * \param fan_speed fan speed override for this skin area
      * \param forced_small_area_width A specific value to be used for small_area_width when generating the infill, or nullopt to use the normal value
+     * \param print_attributes Print attributes to be set for this segment, e.g. overhanging or bridging
      */
     void processSkinPrintFeature(
         const SliceDataStorage& storage,

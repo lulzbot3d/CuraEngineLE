@@ -583,9 +583,9 @@ void LayerPlan::addExtrusionMove(
     const Ratio speed_factor,
     const double fan_speed,
     const bool travel_to_z,
-    const PrintSegmentAttributes& attributes)
+    const PrintSegmentAttributes& print_attributes)
 {
-    GCodePath* path = getLatestPathWithConfig(config, space_fill_type, config.z_offset, flow, width_factor, spiralize, speed_factor, travel_to_z, attributes);
+    GCodePath* path = getLatestPathWithConfig(config, space_fill_type, config.z_offset, flow, width_factor, spiralize, speed_factor, travel_to_z, print_attributes);
     path->points.push_back(p);
     path->setFanSpeed(fan_speed);
     if (! static_cast<bool>(first_extrusion_acc_jerk_))
