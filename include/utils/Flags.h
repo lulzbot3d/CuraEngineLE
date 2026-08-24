@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Ultimaker B.V.
+// Copyright (c) 2026 UltiMaker
 // CuraEngine is released under the terms of the AGPLv3 or higher.
 
 #ifndef UTILS_FLAGS_H
@@ -6,6 +6,12 @@
 
 #include <type_traits>
 
+/*!
+ * Utility class to handle enumerations that are actually combinable bit flags. It adds convenient methods to combine the values, compare and test
+ * them in a type-safe way.
+ * @tparam EnumClass The enumeration class which values are to be used. All the values should set a single and different bit. There should also be
+ *                   some `none` value that contains 0.
+ */
 template<typename EnumClass>
 class Flags
 {

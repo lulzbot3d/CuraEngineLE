@@ -11,6 +11,11 @@
 namespace cura
 {
 
+/*!
+ * Print attributes are flags that can be added to some print segments to indicate that they have been processed a specific way,
+ * e.g. by using overhanging or bridging settings. They are used for display purposes.
+ * This enumeration has an equivalent in Cura/cura/PrintSegmentAttributes.py
+ */
 enum class PrintSegmentAttribute : uint8_t
 {
     None = 0,

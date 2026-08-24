@@ -109,6 +109,7 @@ public:
      * \param line_width The width of the line.
      * \param line_thickness The thickness (in the Z direction) of the line.
      * \param velocity The velocity of printing this polygon.
+     * \param print_attributes Print attributes to be set for this segment, e.g. overhanging or bridging
      */
     void sendLineTo(
         const PrintFeatureType& type,
@@ -116,7 +117,7 @@ public:
         const coord_t& line_width,
         const coord_t& line_thickness,
         const Velocity& velocity,
-        const PrintSegmentAttributes& segment_attributes) override;
+        const PrintSegmentAttributes& print_attributes) override;
 
     /*
      * \brief Send the sliced layer data to the front-end after the optimisation

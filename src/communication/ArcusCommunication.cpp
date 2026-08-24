@@ -66,7 +66,7 @@ class ArcusCommunication::PathCompiler
     std::vector<float> line_velocities; //!< Line feedrates for the line segments stored, the size of this vector is N.
     std::vector<float> points; //!< The points used to define the line segments, the size of this vector is D*(N+1) as each line segment is defined from one point to the next. D is
                                //!< the dimensionality of the point.
-    std::vector<uint32_t> line_attributes;
+    std::vector<uint32_t> line_attributes; //! Indicates if the line is processed with specific settings, e.g. overhanging or bridging, the size of this vector is N.
 
     Point3LL last_point;
 
@@ -214,6 +214,7 @@ public:
      * \param line_width The width of the line.
      * \param line_thickness The thickness (in the Z direction) of the line.
      * \param velocity The velocity of printing this polygon.
+     * \param print_attributes Print attributes to be set for this segment, e.g. overhanging or bridging
      */
     void sendLineTo(
         const PrintFeatureType& print_feature_type,
@@ -221,13 +222,13 @@ public:
         const coord_t& width,
         const coord_t& thickness,
         const Velocity& feedrate,
-        const PrintSegmentAttributes& segment_attributes)
+        const PrintSegmentAttributes& print_attributes)
     {
         assert(! points.empty() && "A point must already be in the buffer for sendLineTo(.) to function properly.");
 
         if (to != last_point)
         {
-            addLineSegment(print_feature_type, to, width, thickness, feedrate, segment_attributes);
+            addLineSegment(print_feature_type, to, width, thickness, feedrate, print_attributes);
         }
     }
 
@@ -257,6 +258,7 @@ private:
      * \param width The width of the lines of the polygon.
      * \param thickness The layer thickness of the polygon.
      * \param velocity How fast the polygon is printed.
+     * \param print_attributes Print attributes to be set for this segment, e.g. overhanging or bridging
      */
     void addLineSegment(
         const PrintFeatureType& print_feature_type,
@@ -264,14 +266,14 @@ private:
         const coord_t& width,
         const coord_t& thickness,
         const Velocity& velocity,
-        const PrintSegmentAttributes& segment_attributes)
+        const PrintSegmentAttributes& print_attributes)
     {
         addPoint3D(point);
         line_types.push_back(print_feature_type);
         line_widths.push_back(INT2MM(width));
         line_thicknesses.push_back(INT2MM(thickness));
         line_velocities.push_back(velocity);
-        line_attributes.push_back(uint32_t{ segment_attributes.value() });
+        line_attributes.push_back(static_cast<uint32_t>(print_attributes.value()));
     }
 };
 
@@ -374,9 +376,9 @@ void ArcusCommunication::sendLineTo(
     const coord_t& line_width,
     const coord_t& line_thickness,
     const Velocity& velocity,
-    const PrintSegmentAttributes& segment_attributes)
+    const PrintSegmentAttributes& print_attributes)
 {
-    path_compiler->sendLineTo(type, to, line_width, line_thickness, velocity, segment_attributes);
+    path_compiler->sendLineTo(type, to, line_width, line_thickness, velocity, print_attributes);
 }
 
 void ArcusCommunication::sendOptimizedLayerData()
