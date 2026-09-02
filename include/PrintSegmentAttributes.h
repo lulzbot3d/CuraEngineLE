@@ -18,9 +18,11 @@ namespace cura
  */
 enum class PrintSegmentAttribute : uint8_t
 {
-    None = 0,
-    Overhanging = 0x1,
-    Bridging = 0x2,
+    // clang-format off
+    None        = 0b00,
+    Overhanging = 0b01,
+    Bridging    = 0b10,
+    // clang-format on
 };
 
 using PrintSegmentAttributes = Flags<PrintSegmentAttribute>;
